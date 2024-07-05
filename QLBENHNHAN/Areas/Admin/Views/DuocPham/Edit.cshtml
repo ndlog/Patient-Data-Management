@@ -1,0 +1,90 @@
+﻿@model QLBENHNHAN.Models.Validations.DuocPhamViewModel
+
+@{
+    ViewBag.Title = "Chỉnh sửa Dược Phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row gutters">
+            <h1 class="h3 mb-2 ml-2 text-primary">Chỉnh sửa Dược Phẩm</h1>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <h6 class="mb-2 text-primary">Thông tin Dược Phẩm</h6>
+                                </div>
+                                @Html.HiddenFor(model => model.MADP)
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group pe-none">
+                                        @Html.Label("Mã Dược Phẩm", htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.MADP, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        @Html.ValidationMessageFor(model => model.MADP, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        @Html.Label("Tên Dược Phẩm", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.EditorFor(model => model.TENDUOCPHAM, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.TENDUOCPHAM, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        @Html.Label("Loại Dược Phẩm", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.DropDownListFor(model => model.idLDP, ViewBag.LoaiDuocPhamList as SelectList, "--Chọn loại dược phẩm--", new { @class = "form-select" })
+                                        @Html.ValidationMessageFor(model => model.idLDP, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        @Html.Label("Xuất xứ", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.EditorFor(model => model.XUATXU, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.XUATXU, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        @Html.Label("Giá tiền", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.EditorFor(model => model.GIA, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.GIA, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        @Html.Label("Mô tả", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.TextAreaFor(model => model.MOTA, new { @class = "form-control", @rows = 5 })
+                                        @Html.ValidationMessageFor(model => model.MOTA, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="text-right">
+                                        <a class="btn btn-light" href="/Admin/DuocPham">Trở lại</a>
+                                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>
+
+

@@ -1,0 +1,230 @@
+﻿@model QLBENHNHAN.Models.HOADON
+
+@{
+    ViewBag.Title = "Chi tiết hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var chiTietHoaDon = Json.Decode(Model.CHITIETHOADON);
+    var cultureInfo = new System.Globalization.CultureInfo("en-US");
+    decimal overallTotal = 0;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <style>
+        .vertical-navbar {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+            .vertical-navbar .nav-link {
+                color: #333;
+                border-radius: 4px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+                .vertical-navbar .nav-link:hover {
+                    background-color: #007bff;
+                    color: #fff;
+                }
+
+                .vertical-navbar .nav-link .fa-solid {
+                    margin-right: 8px;
+                }
+
+        .active {
+            background-color: #0d6efd !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="min-height: 100vh;">
+        <div class="row" style="margin-top: 160px;">
+            <div class="col-lg-3">
+                <nav class="vertical-navbar">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/updateinformation">
+                                <i class="fa-solid fa-circle-info px-2"></i>
+                                Thông tin cá nhân
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/themlichhen">
+                                <i class="fa-solid fa-calendar-check px-2"></i>
+                                Lịch hẹn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachthamkham">
+                                <i class="fa-solid fa-square-poll-vertical px-2"></i>
+                                Kết quả khám
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachdonthuoc">
+                                <i class="fa-solid fa-prescription-bottle-medical px-2"></i>
+                                Đơn thuốc
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/home/danhsachhoadon">
+                                <i class="fa-solid fa-file-invoice px-2"></i>
+                                Hóa đơn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachbienlai">
+                                <i class="fa-solid fa-receipt px-2"></i>
+                                Biên lai
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-9 shadow py-4 main-content">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="container mb-5 mt-3">
+                            <div class="row d-flex align-items-baseline">
+                                <div class="col-xl-1">
+                                    <a href="@Url.Action("DanhSachHoaDon")"><i class="fa-solid fa-arrow-left"></i></a>
+                                </div>
+                                <div class="col-xl-8">
+                                    <p style="color: #7e8d9f;font-size: 20px;">Hóa Đơn >> <strong>@Model.MAHD</strong></p>
+                                </div>
+                                <hr>
+                            </div>
+
+                            <div class="container">
+                                <div class="col-md-12 mb-4">
+                                    <div class="text-center">
+                                        <i class="fa-solid fa-heart-pulse" style="color:#5d9fc5; font-size: 50px;"></i>
+                                        <p class="pt-0">VLU HEART</p>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-xl-8">
+                                        <ul class="list-unstyled">
+                                            <li class="text-muted">Đến: <span style="color:#5d9fc5 ;">@Model.BENHNHAN.HOTEN</span></li>
+                                            <li class="text-muted"><i class="fa-solid fa-location-dot"></i> @Model.BENHNHAN.DIACHI</li>
+                                            <li class="text-muted"><i class="fas fa-phone"></i> @Model.BENHNHAN.SODIENTHOAI</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <p class="text-muted">Hóa đơn</p>
+                                        <ul class="list-unstyled">
+                                            <li class="text-muted">
+                                                <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">ID:</span>@Model.MAHD
+                                            </li>
+                                            <li class="text-muted">
+                                                <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">Ngày tạo: </span>@Model.NGAYTAO.Value.ToString("dd/MM/yyyy HH:mm")
+                                            </li>
+                                            <li class="text-muted">
+                                                <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="me-1 fw-bold">Trạng thái:</span>
+                                                @if (Model.TRANGTHAI == false)
+                                                {
+                                                    <span style="padding: 5px 8px; font-size: 14px;" class=" bg-warning text-black fw-bold rounded">
+                                                        Chưa thanh toán
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-success text-white fw-bold rounded">
+                                                        Đã thanh toán
+                                                    </span>
+                                                }
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="row my-4 mx-1 justify-content-center">
+                                    <table class="table table-striped table-borderless">
+                                        <thead style="background-color:#84B0CA ;" class="text-white">
+                                            <tr>
+                                                <th scope="col">STT</th>
+                                                <th scope="col">Tên thuốc</th>
+                                                <th scope="col">Số lượng</th>
+                                                <th scope="col">
+                                                    Giá
+                                                    (VNĐ)
+                                                </th>
+                                                <th scope="col">
+                                                    Tổng
+                                                    (VNĐ)
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int counter = 1;
+                                                foreach (var chiTiet in chiTietHoaDon)
+                                                {
+                                                    overallTotal += chiTiet.TongTien;
+                                                    <tr>
+                                                        <td>@counter</td>
+                                                        <td>@chiTiet.TenThuoc</td>
+                                                        <td>@chiTiet.SoLuong</td>
+                                                        <td>@String.Format(cultureInfo, "{0:N0}", @chiTiet.Gia)</td>
+                                                        <td>@String.Format(cultureInfo, "{0:N0}", @chiTiet.TongTien)</td>
+                                                    </tr>
+                                                    counter++;
+                                                }
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row" style="margin-right: -60px;">
+                                    <div class="col-xl-8">
+                                        <p class="mx-1">Mọi thông tin hỗ trợ hoặc khuyến nại xin vui lòng liên hệ <br />qua hotline của chúng tôi </p>
+
+                                    </div>
+                                    <div class="col-xl-3">
+                                        <p class="text-black float-start">
+                                            <span class="text-black me-3"> Tổng cộng</span><span style="font-size: 20px;">@String.Format(cultureInfo, "{0:N0}", overallTotal) VNĐ</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xl-9">
+                                        <p>Cảm ơn đã sử dụng dịch vụ của chúng tôi</p>
+                                    </div>
+                                    <div class="col-xl-3">
+                                        @if (Model.TRANGTHAI == false)
+                                        {
+                                            @*<form action="/Payment/Payment" method="get">
+                                                <button type="submit">Thanh toán với MoMo</button>
+                                            </form>*@
+                                            <button class="btn btn-primary text-capitalize" style="background-color:#60bdf3 ;">Thanh toán bằng MoMo</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-secondary text-capitalize pe-none">
+                                                Đã thanh toán
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

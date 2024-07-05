@@ -1,0 +1,63 @@
+﻿@model List<QLBENHNHAN.Models.DONTHUOC>
+
+<p class="text-primary">Danh sách đơn thuốc</p>
+@if (Model.Any())
+{
+    // Sort the model by NGAYTAO in ascending order
+    var sortedModel = Model.OrderByDescending(donthuoc => donthuoc.NGAYTAO).ToList();
+
+    var groupedPrescriptions = new Dictionary<string, List<dynamic>>();
+
+    // Group by MADT
+    foreach (var item in sortedModel)
+    {
+        var chiTietDonThuoc = Json.Decode(item.CHITIETDONTHUOC);
+        if (!groupedPrescriptions.ContainsKey(item.MADT))
+        {
+            groupedPrescriptions[item.MADT] = new List<dynamic>();
+        }
+        groupedPrescriptions[item.MADT].AddRange(chiTietDonThuoc);
+    }
+
+    <div class="table-responsive">
+        <table class="table table-bordered" width="100%" cellspacing="0">
+            <tr>
+                <th>
+                    Mã đơn thuốc
+                </th>
+                <th>
+                    Tên thuốc
+                </th>
+                <th>
+                    Số lượng
+                </th>
+            </tr>
+            @foreach (var group in groupedPrescriptions)
+            {
+                var firstRow = true;
+                foreach (var chitiet in group.Value)
+                {
+                    <tr>
+                        @if (firstRow)
+                        {
+                            <td rowspan="@group.Value.Count">
+                                @group.Key
+                            </td>
+                            firstRow = false;
+                        }
+                        <td>
+                            @chitiet.TenThuoc
+                        </td>
+                        <td>
+                            @chitiet.SoLuong
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+}
+else
+{
+    <p class="text-danger">Bệnh nhân này chưa có đơn thuốc.</p>
+}

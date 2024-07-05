@@ -1,0 +1,198 @@
+﻿@model List<QLBENHNHAN.Models.PHIEUHEN>
+
+@{
+    ViewBag.Title = "Danh sách lịch hẹn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .vertical-navbar {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+            .vertical-navbar .nav-link {
+                color: #333;
+                border-radius: 4px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+                .vertical-navbar .nav-link:hover {
+                    background-color: #007bff;
+                    color: #fff;
+                }
+
+                .vertical-navbar .nav-link .fa-solid {
+                    margin-right: 8px;
+                }
+
+        .active {
+            background-color: #0d6efd !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="min-height: 100vh;">
+        <div class="row" style="margin-top: 160px;">
+            <div class="col-lg-3">
+                <nav class="vertical-navbar">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/updateinformation">
+                                <i class="fa-solid fa-circle-info px-2"></i>
+                                Thông tin cá nhân
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/home/danhsanhlichhen">
+                                <i class="fa-solid fa-calendar-check px-2"></i>
+                                Lịch hẹn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachthamkham">
+                                <i class="fa-solid fa-square-poll-vertical px-2"></i>
+                                Kết quả khám
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachdonthuoc">
+                                <i class="fa-solid fa-prescription-bottle-medical px-2"></i>
+                                Đơn thuốc
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachhoadon">
+                                <i class="fa-solid fa-file-invoice px-2"></i>
+                                Hóa đơn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachbienlai">
+                                <i class="fa-solid fa-receipt px-2"></i>
+                                Biên lai
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-9 shadow py-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="h3 mb-4 text-primary">Danh Sách Lịch Hẹn</h1>
+                        </div>
+                        <p>
+                            <a class="btn-sm btn-primary" href="@Url.Action("ThemLichHen", "Home")"><i class="fa-solid fa-plus"></i></a>
+                        </p>
+                    </div>
+                    <div class="row">
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-bordered justify-content-center" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Số điện thoại</th>
+                                            <th>Ngày</th>
+                                            <th>Giờ</th>
+                                            <th>Ghi chú</th>
+                                            <th>Tình trạng</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 0; i < Model.Count; i++)
+                                        {
+                                            var record = Model[i];
+                                            var rowClass = i % 2 == 0 ? "" : "table-secondary";
+                                            <tr class="@rowClass">
+                                                <td>@record.SODIENTHOAI</td>
+                                                <td>@record.NGAY.Value.ToString("dd/MM/yyyy")</td>
+                                                <td>@record.GIO</td>
+                                                <td>
+                                                    @if (record.GHICHU == null)
+                                                    {
+                                                        <span>Không có</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @record.GHICHU
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (record.ACTIVE == false)
+                                                    {
+                                                        <span class="text-danger">Chưa duyệt</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-success">Đã duyệt</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (record.ACTIVE == false)
+                                                    {
+                                                        <button type="button" class="rounded btn-info" data-toggle="modal" data-placement="bottom" title="Hủy lịch hẹn" data-target="#deleteModal-@record.MALH">
+                                                            <i class="fa-solid fa-xmark"></i>
+                                                        </button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <button type="button" style="background-color: #808080;" class="rounded pe-none" data-toggle="modal" data-placement="bottom" title="Hủy lịch hẹn" data-target="#deleteModal-@record.MALH">
+                                                            <i class="fa-solid fa-xmark"></i>
+                                                        </button>
+                                                    }
+                                                    <!-- Delete Modal-->
+                                                    @using (Html.BeginForm("XoaLichHen", "Home", new { id = record.MALH }, FormMethod.Post, null))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+                                                        <div class="modal fade" id="deleteModal-@record.MALH" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title text-danger" id="exampleModalLabel">Xác nhận Hủy Lịch Hẹn?</h5>
+                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">×</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">Chọn "Xác nhận" bên dưới nếu bạn chắc chắn hủy lịch hẹn này.</div>
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy bỏ</button>
+                                                                        <button type="submit" class="btn btn-danger">Xác nhận</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                        <div class="alert alert-info" role="alert">
+                            Hiện tại bạn chưa có lịch hẹn nào.
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

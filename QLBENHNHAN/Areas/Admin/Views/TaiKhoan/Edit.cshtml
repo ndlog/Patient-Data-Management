@@ -1,0 +1,82 @@
+﻿@model QLBENHNHAN.Models.Validations.TaiKhoanViewModel
+
+@{
+    ViewBag.Title = "Chỉnh sửa Tài Khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row gutters">
+            <h1 class="h3 mb-2 ml-2 text-primary">Chỉnh sửa Tài Khoản</h1>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <h6 class="mb-2 text-primary">Thông tin cá nhân</h6>
+                                </div>
+                                @Html.HiddenFor(model => model.MATK)
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group pe-none">
+                                        @Html.Label("Mã tài khoản", htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.MATK, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                        @Html.ValidationMessageFor(model => model.MATK, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group pe-none">
+                                        @Html.LabelFor(model => model.USERNAME, "Username", htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.USERNAME, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                        @Html.ValidationMessageFor(model => model.USERNAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.EMAIL, "Email", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.NewPassword, "Mật khẩu mới", htmlAttributes: new { @class = "control-label" })
+                                        @Html.PasswordFor(model => model.NewPassword, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.NewPassword, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.ConfirmNewPassword, "Xác nhận mật khẩu mới", htmlAttributes: new { @class = "control-label" })
+                                        @Html.PasswordFor(model => model.ConfirmNewPassword, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.ConfirmNewPassword, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="text-right">
+                                        <a class="btn btn-light" href="/Admin/TaiKhoan">Trở lại</a>
+                                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             }
+        </div>
+    </div>
+</body>
+</html>
+
+

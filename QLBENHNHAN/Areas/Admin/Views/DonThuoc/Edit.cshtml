@@ -1,0 +1,167 @@
+﻿@model QLBENHNHAN.Models.DONTHUOC
+
+@{
+    ViewBag.Title = "Chỉnh sửa Đơn Thuốc";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var chiTietDonThuoc = Json.Decode(Model.CHITIETDONTHUOC);
+}
+
+<div class="container">
+    <div class="row gutters">
+        <h1 class="h3 mb-2 ml-2 text-primary">Chỉnh sửa Đơn Thuốc</h1>
+        @using (Html.BeginForm("Edit", "DonThuoc", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h6 class="mb-2 text-primary">Thông tin cơ bản</h6>
+                            </div>
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.MADT)
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group pe-none">
+                                    @Html.Label("Mã đơn thuốc", htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.MADT, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.MADT, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group pe-none">
+                                    @Html.LabelFor(model => model.idBN, "Tên bệnh nhân", htmlAttributes: new { @class = "control-label" })
+                                    @Html.DropDownList("idBN", null, new { @class = "form-control", @readonly = true })
+                                    @Html.ValidationMessageFor(model => model.idBN, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group pe-none">
+                                    @Html.Label("Tên đơn thuốc", htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.TENDONTHUOC, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.TENDONTHUOC, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label class="text-primary" for="searchProduct">Tìm kiếm thuốc</label>
+                                    <input type="text" class="form-control" id="searchProduct" placeholder="Nhập tên thuốc">
+                                    <ul style="max-height: 300px; overflow-y: auto; cursor: pointer;" id="searchResult" class="list-group mt-1"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <p class="text-primary">Danh sách thuốc</p>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Tên thuốc</th>
+                                            <th>Số lượng</th>
+                                            <th>Đơn vị</th>
+                                            <th>Ghi chú</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="selectedProductsBody">
+                                        @foreach (var chiTiet in chiTietDonThuoc)
+                                        {
+                                            <tr>
+                                                <td>@chiTiet.TenThuoc</td>
+                                                <td><input type="number" min="1" class="form-control" value="@chiTiet.SoLuong"></td>
+                                                <td><input type="text" class="form-control" value="@chiTiet.DonVi"></td>
+                                                <td><textarea class="form-control">@chiTiet.GhiChu</textarea></td>
+                                                <td><button type="button" class="btn btn-danger delete-product-btn"><i class="fa-solid fa-trash"></i></button></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="text-right">
+                                    <a class="btn btn-light" href="/Admin/DonThuoc">Trở lại</a>
+                                    <button type="submit" class="btn btn-primary">Lưu lại</button>
+                                </div>
+                            </div>
+                        </div>
+                        @Html.HiddenFor(model => model.CHITIETDONTHUOC, new { id = "ChiTietDonThuoc" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function getDataFromTable() {
+            var drugsList = [];
+            $('#selectedProductsBody tr').each(function () {
+                var drugName = $(this).find('td:nth-child(1)').text().trim();
+                var quantity = $(this).find('td:nth-child(2) input').val().trim();
+                var unit = $(this).find('td:nth-child(3) input').val().trim();
+                var note = $(this).find('td:nth-child(4) textarea').val().trim();
+
+                var drug = {
+                    TenThuoc: drugName,
+                    SoLuong: parseInt(quantity),
+                    DonVi: unit,
+                    GhiChu: note
+                };
+                drugsList.push(drug);
+            });
+
+            return JSON.stringify(drugsList);
+        }
+
+        $(document).ready(function () {
+            $('form').submit(function () {
+                var drugsData = getDataFromTable();
+                $('#ChiTietDonThuoc').val(drugsData);
+            });
+
+            var typingTimer;
+            var doneTypingInterval = 1000;
+
+            $('#searchProduct').keyup(function () {
+                clearTimeout(typingTimer);
+                if ($('#searchProduct').val()) {
+                    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+                }
+            });
+
+            function doneTyping() {
+                var searchKeyword = $('#searchProduct').val();
+                $.ajax({
+                    url: '/Admin/DonThuoc/SearchProducts',
+                    type: 'GET',
+                    data: { keyword: searchKeyword },
+                    success: function (data) {
+                        $('#searchResult').html(data);
+                    },
+                    error: function () {
+                        alert('Đã có lỗi xảy ra');
+                    }
+                });
+            }
+
+            $(document).on('click', '.list-group-item', function () {
+                var productName = $(this).text();
+                var newRow = '<tr><td>' + productName + '</td><td><input type="number" min="1" class="form-control product-quantity" value="1"></td><td><input type="text" value="Viên" class="form-control product-unit"></td><td><textarea class="form-control product-note">Ngày uống 2 lần</textarea></td><td><button class="btn btn-danger delete-product-btn"><i class="fa-solid fa-trash"></i></button></td></tr>';
+                $('#selectedProductsBody').append(newRow);
+                $('#searchProduct').val('');
+                $('#searchResult').empty();
+            });
+
+            $(document).on('click', '.delete-product-btn', function () {
+                $(this).closest('tr').remove();
+            });
+        });
+    </script>
+}

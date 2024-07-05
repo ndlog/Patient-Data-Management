@@ -1,0 +1,76 @@
+﻿@model QLBENHNHAN.Models.Validations.PhongViewModel
+
+@{
+    ViewBag.Title = "Chỉnh sửa Phòng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row gutters">
+            <h1 class="h3 mb-2 ml-2 text-primary">Chỉnh sửa Phòng</h1>
+            @using (Html.BeginForm("Edit", "Phong", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <h6 class="mb-2 text-primary">Thông tin Phòng</h6>
+                                </div>
+                                @Html.HiddenFor(model => model.MAP)
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group pe-none">
+                                        @Html.Label("Mã phòng", htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.MAP, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        @Html.ValidationMessageFor(model => model.MAP, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        @Html.Label("Tên Phòng", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.EditorFor(model => model.TENPHONG, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.TENPHONG, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        @Html.Label("Loại Phòng", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.DropDownListFor(model => model.idLP, ViewBag.LoaiPhongList as SelectList, "--Chọn loại phòng--", new { @class = "form-select" })
+                                        @Html.ValidationMessageFor(model => model.idLP, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        @Html.Label("Tầng", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.DropDownListFor(model => model.TANG, new SelectList(new List<string> { "Tầng 1", "Tầng 2", "Tầng 3", "Tầng 4", "Tầng 5" }), "--Chọn tầng--", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.TANG, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="text-right">
+                                        <a class="btn btn-light" href="/Admin/Phong">Trở lại</a>
+                                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>
+
+

@@ -1,0 +1,63 @@
+﻿@model QLBENHNHAN.Models.Validations.LoaiPhongViewModel
+
+@{
+    ViewBag.Title = "Chỉnh sửa Loại Phòng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row gutters">
+            <h1 class="h3 mb-2 ml-2 text-primary">Chỉnh sửa Loại Phòng</h1>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <h6 class="mb-2 text-primary">Thông tin phòng</h6>
+                                </div>
+                                @Html.HiddenFor(model => model.MALP)
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group pe-none">
+                                        @Html.Label("Mã loại phòng", htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.MALP, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        @Html.ValidationMessageFor(model => model.MALP, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        @Html.Label("Tên loại phòng", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.EditorFor(model => model.TENLOAIPHONG, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.TENLOAIPHONG, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="text-right">
+                                        <a class="btn btn-light" href="/Admin/LoaiPhong">Trở lại</a>
+                                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             }
+        </div>
+    </div>
+</body>
+</html>
+
+                

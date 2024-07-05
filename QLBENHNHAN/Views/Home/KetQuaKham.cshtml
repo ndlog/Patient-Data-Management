@@ -1,0 +1,215 @@
+﻿@model QLBENHNHAN.Models.CHITIETBENHAN
+
+@{
+    ViewBag.Title = "Chi tiết bệnh án";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <style>
+        .vertical-navbar {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+            .vertical-navbar .nav-link {
+                color: #333;
+                border-radius: 4px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+                .vertical-navbar .nav-link:hover {
+                    background-color: #007bff;
+                    color: #fff;
+                }
+
+                .vertical-navbar .nav-link .fa-solid {
+                    margin-right: 8px;
+                }
+        .active {
+            background-color: #0d6efd !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="min-height: 100vh;">
+        <div class="row" style="margin-top: 160px;">
+            <div class="col-lg-3">
+                <nav class="vertical-navbar">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/updateinformation">
+                                <i class="fa-solid fa-circle-info px-2"></i>
+                                Thông tin cá nhân
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/themlichhen">
+                                <i class="fa-solid fa-calendar-check px-2"></i>
+                                Lịch hẹn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/home/danhsachthamkham">
+                                <i class="fa-solid fa-square-poll-vertical px-2"></i>
+                                Kết quả khám
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachdonthuoc">
+                                <i class="fa-solid fa-prescription-bottle-medical px-2"></i>
+                                Đơn thuốc
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachhoadon">
+                                <i class="fa-solid fa-file-invoice px-2"></i>
+                                Hóa đơn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachbienlai">
+                                <i class="fa-solid fa-receipt px-2"></i>
+                                Biên lai
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-9 shadow py-4 main-content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="h3 mb-4 text-primary">Thông tin chi tiết Bệnh Án</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h6 class="mb-2 text-primary">Thông tin cơ bản</h6>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group pe-none">
+                                <label class="control-label">Tiêu đề</label>
+                                <input class="form-control" value="@Model.TENBENHAN" readonly />
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group pe-none">
+                                <label class="control-label">Tên bác sĩ</label>
+                                <input class="form-control" value="@Model.idBS" readonly />
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group pe-none">
+                                <label class="control-label">Tên bệnh nhân</label>
+                                <input class="form-control" value="@Model.idBN" readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="mb-2 mt-4 text-primary">Thông tin vào</h6>
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group pe-none">
+                                        <label class="control-label">Ngày</label>
+                                        <input class="form-control" value="@(Model.NGAY.HasValue ? Model.NGAY.Value.ToString("dd/MM/yyyy") : string.Empty)" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group pe-none">
+                                        <label class="control-label">Giờ</label>
+                                        <input class="form-control" value="@Model.GIO" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group pe-none">
+                                        <label class="control-label">Mạch</label>
+                                        <input class="form-control" value="@Model.MACH" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group pe-none">
+                                        <label class="control-label">Thân nhiệt</label>
+                                        <input class="form-control" value="@Model.THANNHIET" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group pe-none">
+                                        <label class="control-label">Chiều cao</label>
+                                        <input class="form-control" value="@Model.CHIEUCAO" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group pe-none">
+                                        <label class="control-label">Cân nặng</label>
+                                        <input class="form-control" value="@Model.CANNANG" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group pe-none">
+                                        <label class="control-label">Mắt trái</label>
+                                        <input class="form-control" value="@Model.MATTRAI" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group pe-none">
+                                        <label class="control-label">Mắt phải</label>
+                                        <input class="form-control" value="@Model.MATPHAI" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group pe-none">
+                                        <label class="control-label">Nhãn áp trái</label>
+                                        <input class="form-control" value="@Model.NHANAPTRAI" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group pe-none">
+                                        <label class="control-label">Nhãn áp phải</label>
+                                        <input class="form-control" value="@Model.NHANAPPHAI" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group pe-none">
+                                        <label class="control-label">Tiền sử bệnh</label>
+                                        <textarea class="form-control" readonly>@Model.TIENSUBENH</textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group pe-none">
+                                        <label class="control-label">Chẩn đoán lâm sàng</label>
+                                        <textarea class="form-control" readonly>@Model.CHUANDOANLAMSANG</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                            <h6 class="mb-2 mt-4 text-primary">Thông tin ra</h6>
+                        <div class="col">
+                            <div class="form-group pe-none">
+                                <label class="control-label">Chẩn đoán cuối cùng</label>
+                                <textarea class="form-control" readonly>@Model.CHUANDOANCUOICUNG</textarea>
+                            </div>
+                            <!-- Add other output information fields here -->
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <a href="@Url.Action("DanhSachThamKham", "Home")" class="btn-sm btn-primary">Quay lại</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

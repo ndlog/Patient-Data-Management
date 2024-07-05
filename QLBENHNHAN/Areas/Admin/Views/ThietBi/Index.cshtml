@@ -1,0 +1,160 @@
+﻿@model PagedList.IPagedList<QLBENHNHAN.Models.THIETBI>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Danh sách Thiết Bị";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Quản lý Thiết bị</h1>
+        <p>
+            @Html.ActionLink("Thêm Mới", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        <!-- DataTales-->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Dữ liệu Thiết Bị</h6>
+            </div>
+            <div class="card-body">
+                <form method="get">
+                    <div class="form-actions no-color">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-actions no-color">
+                                    <p>
+                                        <input class="w-50 p-2 border rounded border-secondary" type="text" name="SearchString" placeholder="Nhập ký tự tìm kiếm..." />
+                                        <input type="submit" value="Tìm kiếm" class="btn btn-success m-lg-3" /> |
+                                        <a class="btn btn-secondary text-decoration-none m-lg-3" href="~/Admin/ThietBi/"><i class="fa-solid fa-rotate-left"></i></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <tr class="pe-none">
+                            <th>
+                                <a style="color: #100000;" href="@Url.Action("Index", new { currentFilter = ViewBag.CurrentFilter })">Mã thiết bị</a>
+                            </th>
+                            <th>
+                                <a style="color: #100000;" href="@Url.Action("Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })">Tên thiết bị</a>
+                            </th>
+                            <th>
+                                Loại thiết bị
+                            </th>
+                            <th>
+                                Tình trạng
+                            </th>
+                            <th>
+                                Vị trí sử dụng
+                            </th>
+                            <th>
+                                <a style="color: #100000;" href="@Url.Action("Index", new { currentFilter = ViewBag.CurrentFilter })">Xuất xứ</a>
+                            </th>
+                            <th>Hành động</th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MATB)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TENTHIETBI)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LOAITHIETBI.TENLOAITHIETBI)
+                                </td>
+                                <td>
+                                    @if (item.TINHTRANG == "Đang hoạt động")
+                                    {
+                                        <span style="font-size: 84%;" class="badge bg-warning text-white fw-bold">
+                                            Đang hoạt động
+                                        </span>
+                                    }
+                                    @if (item.TINHTRANG == "Đang bào trì")
+                                    {
+                                        <span style="font-size: 84%;" class="badge bg-danger text-white fw-bold">
+                                            Đang bảo trì
+                                        </span>
+                                    }
+                                    @if (item.TINHTRANG == "Không hoạt động")
+                                    {
+                                        <span style="font-size: 84%;" class="badge bg-success text-white fw-bold">
+                                            Không hoạt động
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PHONG.TENPHONG) -
+                                    @Html.DisplayFor(modelItem => item.PHONG.TANG)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.XUATXU)
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary mt-1" data-toggle="tooltip"
+                                       data-placement="bottom" title="Chỉnh sửa"
+                                       href="@Url.Action("Edit", "ThietBi", new { id = item.MATB })">
+                                        <i class="fa-solid fa-user-pen"></i>
+                                    </a>
+                                    <a class="btn btn-info mt-1" data-toggle="tooltip"
+                                       data-placement="bottom" title="Chi tiết"
+                                       href="@Url.Action("Details", "ThietBi", new { id = item.MATB })">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-danger mt-1"
+                                            data-toggle="modal" data-placement="bottom" title="Xóa" data-target="#deleteModal-@item.MATB">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                    <!-- Delete Modal-->
+                                    @using (Html.BeginForm("Delete", "ThietBi", new { id = item.MATB }, FormMethod.Post, null))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <div class="modal fade" id="deleteModal-@item.MATB" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title text-danger" id="exampleModalLabel">Xác nhận Xóa Thiết Bị?</h5>
+                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">Chọn "Xác nhận" bên dưới nếu bạn chắc chắn xóa Thiết Bị này.</div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy bỏ</button>
+                                                        <button type="submit" class="btn btn-danger">Xác nhận</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                    <br />
+                    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) trên @Model.PageCount
+
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

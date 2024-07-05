@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "Trang đăng nhập";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Content/font/fontawesome-free-6.5.2-web/css/all.min.css" asp-append-version="true" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+    <script src="~/Scripts/jquery-3.7.1.min.js"></script>
+
+    <!-- Thư viện PopperJS (cần thiết cho dropdown, tooltip, và popovers của Bootstrap) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <section class="vh-100">
+        <a type="button" href="/home" class="btn-close position-absolute" style="top: 10px; right: 20px;" aria-label="Close"></a>
+        <!--Toast-->
+        <div class="position-fixed end-0 p-3" style="z-index: 11; top:60px">
+            <div class="toast align-items-center text-white" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        @if (TempData["Success"] != null)
+                        {
+                            @TempData["Success"]
+                        }
+
+                        @if (TempData["Error"] != null)
+                        {
+                            @TempData["Error"]
+                        }
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid h-custom">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-9 col-lg-6 col-xl-5 d-flex justify-content-center align-items-center">
+                    <img src="https://colorlib.com/etc/regform/colorlib-regform-7/images/signin-image.jpg"
+                         class="img-fluid" alt="Sample image">
+                </div>
+                <div class="col-md-8 col-lg-6 col-xl-4 position-relative shadow rounded" style="font-size: 1.2rem; padding: 30px 40px;">
+                    @using (Html.BeginForm("Login", "Home", null, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="form3Example3">Username</label>
+                            <input name="username" type="text" id="form3Example3" class="form-control" />
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="form3Example4">Password</label>
+                            <input name="password" type="password" id="form3Example4" class="form-control" />
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!-- Checkbox -->
+                            <div class="form-check mb-0">
+                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+                                <label class="form-check-label" for="form2Example3">
+                                    Nhớ đăng nhập
+                                </label>
+                            </div>
+                            <a href="/home/forgotpassword" class="text-body">Quên mật khẩu?</a>
+                        </div>
+
+                        <div class="text-center text-lg-start mt-4 pt-2">
+                            <button type="submit" class="btn btn-primary btn-lg"
+                                    style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                                Đăng nhập
+                            </button>
+                            <p class="small fw-bold mt-2 pt-1 mb-0">
+                                Bạn không có tài khoản? <a href="/home/register"
+                                                           class="link-danger">Đăng ký</a>
+                            </p>
+                        </div>
+
+                        <div class="divider d-flex align-items-center my-4">
+                            <p class="text-center fw-bold mx-3 mb-0">Hoặc</p>
+                        </div>
+
+                        <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                            <p class="lead fw-normal mb-0 me-3">Đăng nhập với</p>
+                            <button type="button" class="btn btn-primary mx-1">
+                                <i class="fa-brands fa-google"></i>
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+     $(document).ready(function () {
+         // Kiểm tra xem có thông báo thành công từ TempData không
+         var successMessage = "@TempData["Success"]";
+         var errorMessage = "@TempData["Error"]";
+         if (successMessage) {
+             $('.toast').toast('show');
+             $('.toast').addClass('bg-success');
+             setTimeout(function () {
+                 $('.toast').toast('hide');
+             }, 4000);
+         }
+         else if (errorMessage) {
+             $('.toast').toast('show');
+             $('.toast').addClass('bg-danger');
+             setTimeout(function () {
+                 $('.toast').toast('hide');
+             }, 4000);
+         }
+     });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('input[type="text"]').blur(function () {
+                // Loại bỏ khoảng trắng trước và sau khi người dùng nhập dữ liệu
+                $(this).val($.trim($(this).val()));
+            });
+        });
+
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="apple-touch-icon" sizes="180x180" href="~/Content/customer/assets/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/Content/customer/assets/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Content/customer/assets/img/favicon/favicon-16x16.png">
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/customer/assets/img/favicon/favicon.ico">
+    <link rel="manifest" href="~/Content/customer/assets/img/favicon/site.webmanifest">
+    <meta name="theme-color" content="#ffffff">
+
+    <link href="~/Content/customer/assets/css/theme.min.css" rel="stylesheet" />
+
+    <!-- jQuery (cần thiết cho các plugin JavaScript của Bootstrap) -->
+    <script src="~/Scripts/jquery-3.7.1.min.js"></script>
+
+    <!-- Thư viện PopperJS (cần thiết cho dropdown, tooltip, và popovers của Bootstrap) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/Content/font/fontawesome-free-6.5.2-web/css/all.min.css" />
+
+    <style>
+        .form-control {
+            padding-left: 0.5rem;
+            background-color: white;
+        }
+
+            .form-control:focus {
+                background-color: rgba(13, 175, 202, 0.08);
+            }
+
+        .form-select {
+            border: 1px solid #AFAEBC;
+            color: #1B71A1;
+            font-weight: 400;
+            background-color: white;
+            border-radius: 0.5rem;
+        }
+
+            .form-select:focus {
+                font-weight: 400;
+                border: 1px solid #AFAEBC;
+                color: #1B71A1;
+            }
+    </style>
+
+</head>
+<body>
+    <main class="main" id="top">
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 d-block" data-navbar-on-scroll="data-navbar-on-scroll">
+            <div class="container">
+                <a class="navbar-brand" href="/home"><img src="~/Content/customer/assets/img/logo.png" width="200" alt="logo" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"> </span></button>
+                <div class="collapse navbar-collapse border-top border-lg-0 mt-4 mt-lg-0" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto pt-2 pt-lg-0 font-base">
+                        <li class="nav-item px-2"><a class="nav-link" aria-current="page" href="#chungtoi">Về Chúng Tôi</a></li>
+                        <li class="nav-item px-2"><a class="nav-link" href="#phongban">Phòng Ban</a></li>
+                        @if ((string)Session["UserRole"] == "Customer")
+                        {
+                            <li class="nav-item px-2"><a class="nav-link" href="#lichhen">Lịch Hẹn</a></li>
+                        }
+                        else
+                        {
+                            <li class="nav-item px-2"><a class="nav-link" href="/home/login">Lịch Hẹn</a></li>
+                        }
+                        @*<li class="nav-item px-2"><a class="nav-link" href="#findUs">Membership</a></li>
+                            <li class="nav-item px-2"><a class="nav-link" href="#findUs">Help </a></li>*@
+                        <li class="nav-item px-2"><a class="nav-link" href="#lienhe">Liên Hệ</a></li>
+                    </ul>
+                    @if (Session["UserNameCustomer"] != null)
+                    {
+                        <div class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle text-primary" href="#" id="userDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Xin chào, @Session["UserNameCustomer"].ToString()
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in rounded" style="min-width: -webkit-fill-available;" aria-labelledby="userDropdown">
+                                <a href="/home/updateinformation" class="dropdown-item" data-placement="bottom" title="Chỉnh sửa thông tin">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Hồ sơ
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/home/logout" style="cursor: pointer;">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Đăng Xuất
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="btn btn-sm btn-outline-primary rounded-pill order-1 order-lg-0 ms-lg-4" href="/home/login">Đăng nhập</a>
+                    }
+                    <!--Toast-->
+                    <div class="position-fixed end-0 p-3" style="z-index: 11; top:60px">
+                        <div class="toast align-items-center text-white" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    @if (TempData["Success"] != null)
+                                    {
+                                        @TempData["Success"]
+                                    }
+
+                                    @if (TempData["Error"] != null)
+                                    {
+                                        @TempData["Error"]
+                                    }
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        @RenderBody()
+
+        @*footer*@
+        <section class="py-0 bg-primary">
+
+            <div class="container">
+                <div class="row justify-content-md-between justify-content-evenly py-4">
+                    <div class="col-12 col-sm-8 col-md-6 col-lg-auto text-center text-md-start">
+                        <p class="fs--1 my-2 fw-bold text-200">Đã đăng ký Bản quyền &copy; VLU, 2024</p>
+                    </div>
+                    <div class="col-12 col-sm-8 col-md-6">
+                        <p class="fs--1 my-2 text-center text-md-end text-200">
+                            Được thực hiện&nbsp;
+                            <svg class="bi bi-suit-heart-fill" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#F95C19" viewBox="0 0 16 16">
+                                <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"></path>
+                            </svg>&nbsp;bởi&nbsp;<a class="fw-bold text-info" href="https://themewagon.com/" target="_blank">Nguyen Duc Long </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="~/Content/customer/vendors/popperjs/popper.min.js"></script>
+    <script src="~/Content/customer/vendors/bootstrap/bootstrap.min.js"></script>
+    <script src="~/Content/customer/vendors/is/is.min.js"></script>
+    @*<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js"></script>*@
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+    <script src="~/Content/customer/vendors/fontawesome/all.min.js"></script>
+    <script src="~/Content/customer/assets/js/theme.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&amp;family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100&amp;display=swap" rel="stylesheet">
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            // Kiểm tra xem có thông báo thành công từ TempData không
+            var successMessage = "@TempData["Success"]";
+            var errorMessage = "@TempData["Error"]";
+            if (successMessage) {
+                $('.toast').toast('show');
+                $('.toast').addClass('bg-success');
+                setTimeout(function () {
+                    $('.toast').toast('hide');
+                }, 4000);
+            }
+            else if (errorMessage) {
+                $('.toast').toast('show');
+                $('.toast').addClass('bg-danger');
+                setTimeout(function () {
+                    $('.toast').toast('hide');
+                }, 4000);
+            }
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('input[type="text"]').blur(function () {
+                // Loại bỏ khoảng trắng trước và sau khi người dùng nhập dữ liệu
+                $(this).val($.trim($(this).val()));
+            });
+        });
+
+    </script>
+</body>
+</html>
+@*ChatBox*@
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger intent="WELCOME"
+              chat-title="ChatBox"
+              agent-id="8848008b-c6a4-4913-9968-c76b2969e759"
+              language-code="vi"></df-messenger>

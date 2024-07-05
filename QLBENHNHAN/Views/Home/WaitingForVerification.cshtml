@@ -1,0 +1,81 @@
+﻿@{
+    Layout = null;
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chờ xác thực tài khoản</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .verification-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .verification-content {
+            max-width: 600px;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #1cc88a;
+            font-size: 24px;
+            border-bottom: 2px solid #1cc88a;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .btn-home {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            color: #fff;
+            background-color: #1cc88a;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+            .btn-home:hover {
+                background-color: #17a673;
+                cursor: pointer;
+            }
+    </style>
+</head>
+<body>
+    <div class="verification-container">
+        <div class="verification-content">
+            <h2>Chờ xác thực email</h2>
+            <p>Xin chào,</p>
+            <p>Cảm ơn bạn đã đăng ký tài khoản. Chúng tôi đã gửi một email xác thực đến địa chỉ email của bạn. Vui lòng kiểm tra hộp thư và nhấp vào liên kết xác thực để hoàn tất quá trình đăng ký.</p>
+            <p>Nếu bạn không nhận được email, vui lòng kiểm tra thư mục spam hoặc thử đăng ký lại.</p>
+            <a href="@Url.Action("Index", "Home")" class="btn-home">Quay về trang chủ</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,163 @@
+﻿@model QLBENHNHAN.Models.BENHNHAN
+
+@{
+    ViewBag.Title = "Chỉnh sửa thông tin cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .vertical-navbar {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+            .vertical-navbar .nav-link {
+                color: #333;
+                border-radius: 4px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+                .vertical-navbar .nav-link:hover {
+                    background-color: #007bff;
+                    color: #fff;
+                }
+
+                .vertical-navbar .nav-link .fa-solid {
+                    margin-right: 8px;
+                }
+        .active {
+            background-color: #0d6efd !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="min-height: 100vh;">
+        <div class="row" style="margin-top: 160px;">
+            <div class="col-lg-3">
+                <nav class="vertical-navbar">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                <i class="fa-solid fa-circle-info px-2"></i>
+                                Thông tin cá nhân
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachlichhen">
+                                <i class="fa-solid fa-calendar-check px-2"></i>
+                                Lịch hẹn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachthamkham">
+                                <i class="fa-solid fa-square-poll-vertical px-2"></i>
+                                Kết quả khám
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachdonthuoc">
+                                <i class="fa-solid fa-prescription-bottle-medical px-2"></i>
+                                Đơn thuốc
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachhoadon">
+                                <i class="fa-solid fa-file-invoice px-2"></i>
+                                Hóa đơn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachbienlai">
+                                <i class="fa-solid fa-receipt px-2"></i>
+                                Biên lai
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-9 shadow py-4">
+                <div class="container">
+                    <div class="row">
+                        <h1 class="h3 mb-4 text-primary">Chi tiết thông tin cá nhân</h1>
+                    </div>
+                    <div class="row">
+                        @using (Html.BeginForm("UpdateInformation", "Home", null, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="row gutters">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <h6 class="mb-2 text-primary">Thông tin cá nhân</h6>
+                                            </div>
+                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                            @Html.HiddenFor(model => model.MABN)
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    @Html.Label("Họ và tên", htmlAttributes: new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.HOTEN, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.HOTEN, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    @Html.Label("Ngày sinh", htmlAttributes: new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.NGAYSINH, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.NGAYSINH, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    @Html.Label("Email", htmlAttributes: new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.TAIKHOAN.EMAIL, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.TAIKHOAN.EMAIL, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    @Html.Label("Giới tính", htmlAttributes: new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.GIOITINH, new SelectList(new List<string> { "Nam", "Nữ", "Khác" }), "--Chọn giới tính--", new { @class = "form-select" })
+                                                    @Html.ValidationMessageFor(model => model.GIOITINH, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    @Html.Label("Số điện thoại", htmlAttributes: new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.SODIENTHOAI, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.SODIENTHOAI, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    @Html.Label("Địa chỉ", htmlAttributes: new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.DIACHI, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.DIACHI, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row gutters mt-3">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="text-right">
+                                                    <button type="submit" class="btn btn-primary">Lưu</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

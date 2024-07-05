@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fa870178024b4283915b814c701f85dc" Name="Diagram1">
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.BACSI" Width="1.5" PointX="6" PointY="10.5" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.BENHNHAN" Width="1.5" PointX="3" PointY="14.5" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.CHITIETBENHAN" Width="1.5" PointX="8.25" PointY="11.75" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.CHITIETDUOCPHAM" Width="1.5" PointX="3" PointY="11.25" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.CHITIETTHIETBI" Width="1.5" PointX="3" PointY="8.25" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.KHOA" Width="1.5" PointX="3.75" PointY="19.375" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.LOAIDUOCPHAM" Width="1.5" PointX="1.5" PointY="29.375" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.LOAIPHONG" Width="1.5" PointX="1.5" PointY="19.5" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.LOAITHIETBI" Width="1.5" PointX="1.5" PointY="22" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.PHONG" Width="1.5" PointX="1.5" PointY="0.75" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.TAIKHOAN" Width="1.5" PointX="0.75" PointY="10.375" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.THIETBI" Width="1.5" PointX="0.75" PointY="4.75" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_BACSI_KHOA" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_BACSI_TAIKHOAN" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_BENHAN_BACSI" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_BENHAN_BENHNHAN" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_BENHNHAN_PHONG" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_BENHNHAN_TAIKHOAN" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_CHITIETDUOCPHAM_TAIKHOAN" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_CHITIETTHIETBI_TAIKHOAN" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_CHITIETTHIETBI_THIETBI" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_PHONG_LOAIPHONG" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_THIETBI_LOAITHIETBI" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_THIETBI_PHONG" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.PHIEUHEN" Width="1.5" PointX="5.25" PointY="22.125" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_LICHHEN_BENHNHAN" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.DUOCPHAM" Width="1.5" PointX="3.75" PointY="28.75" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_CHITIETDUOCPHAM_DUOCPHAM" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_DUOCPHAM_LOAIDUOCPHAM" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.HOADON" Width="1.5" PointX="5.25" PointY="1.375" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_HOADON_BENHNHAN" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.DONTHUOC" Width="1.5" PointX="5.25" PointY="15.5" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_CHITIETDONTHUOC_BENHNHAN" />
+        <EntityTypeShape EntityType="QLDULIEUBENHNHANModel.BAOCAO" Width="1.5" PointX="3" PointY="5.25" />
+        <AssociationConnector Association="QLDULIEUBENHNHANModel.FK_BAOCAO_TAIKHOAN" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,158 @@
+﻿@model QLBENHNHAN.Models.PHIEUHEN
+
+@{
+    ViewBag.Title = "Đặt lịch hẹn thăm khám";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .vertical-navbar {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+            .vertical-navbar .nav-link {
+                color: #333;
+                border-radius: 4px;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+                .vertical-navbar .nav-link:hover {
+                    background-color: #007bff;
+                    color: #fff;
+                }
+
+                .vertical-navbar .nav-link .fa-solid {
+                    margin-right: 8px;
+                }
+        .active {
+            background-color: #0d6efd !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="min-height: 100vh;">
+        <div class="row" style="margin-top: 160px;">
+            <div class="col-lg-3">
+                <nav class="vertical-navbar">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/updateinformation">
+                                <i class="fa-solid fa-circle-info px-2"></i>
+                                Thông tin cá nhân
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/home/danhssachlichhen">
+                                <i class="fa-solid fa-calendar-check px-2"></i>
+                                Lịch hẹn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachthamkham">
+                                <i class="fa-solid fa-square-poll-vertical px-2"></i>
+                                Kết quả khám
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachdonthuoc">
+                                <i class="fa-solid fa-prescription-bottle-medical px-2"></i>
+                                Đơn thuốc
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachhoadon">
+                                <i class="fa-solid fa-file-invoice px-2"></i>
+                                Hóa đơn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/danhsachbienlai">
+                                <i class="fa-solid fa-receipt px-2"></i>
+                                Biên lai
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-9 shadow py-4 main-content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <p class="h3 text-primary">Đăng ký lịch hẹn thăm khám</p>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <p class="h5 text-danger">*Thời gian làm việc: T2 đến CN trừ các ngày lễ</p>
+                            <p class="h5 text-danger">*Khung giờ: 7h - 11h30 và 13h00 - 17h00</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @using (Html.BeginForm("ThemLichHen", "Home", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="row gutters">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <h6 class="mb-2 text-primary">Thông tin cơ bản</h6>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    @Html.Label("Số điện thoại", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                                    @Html.EditorFor(model => model.SODIENTHOAI, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.SODIENTHOAI, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                           
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    @Html.Label("Ngày", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                                    @Html.EditorFor(model => model.NGAY, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                                    @Html.ValidationMessageFor(model => model.NGAY, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    @Html.Label("Giờ", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                                    @Html.EditorFor(model => model.GIO, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+                                                    @Html.ValidationMessageFor(model => model.GIO, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    @Html.Label("Ghi chú", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                                    @Html.TextAreaFor(model => model.GHICHU, new { @class = "form-control", @rows = 3 })
+                                                    @Html.ValidationMessageFor(model => model.GHICHU, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row gutters">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="text-right">
+                                                    <a href="@Url.Action("DanhSachLichHen", "Home")" class="btn-sm btn-info" style="padding: 16px;">Quay lại</a>
+                                                    <button type="submit" class="btn-sm btn-primary">Đăng ký</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

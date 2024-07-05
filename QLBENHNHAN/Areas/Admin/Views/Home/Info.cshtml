@@ -1,0 +1,78 @@
+﻿@model QLBENHNHAN.Models.Validations.BacSiViewModel
+
+@{
+    ViewBag.Title = "Thông tin cá nhân";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container-xl px-4 mt-4">
+        <nav class="nav nav-borders">
+            <a class="nav-link active ms-0" href="#" target="__blank">Hồ sơ</a>
+            @*<a class="nav-link" href="" target="__blank">Bảo mật</a>*@
+        </nav>
+        <div class="row">
+            <div class="col-xl-12">
+
+                <div class="card mb-4">
+                    <div class="card-header">Chi tiết hồ sơ cá nhân</div>
+                    <div class="card-body">
+                        @using (Html.BeginForm("Info", "Home", null, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(model => model.MABS)
+                            <div class="row gx-3 mb-3">
+
+                                <div class="col-md-6">
+                                    @Html.Label("Họ và tên", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                    @Html.EditorFor(model => model.HOTEN, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.HOTEN, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-md-6">
+                                    @Html.Label("Giới tính", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                    @Html.DropDownListFor(model => model.GIOITINH, new SelectList(new List<string> { "Nam", "Nữ", "Khác" }), "--Chọn giới tính--", new { @class = "form-select" })
+                                    @Html.ValidationMessageFor(model => model.GIOITINH, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="row gx-3 mb-3">
+
+                                <div class="col-md-6">
+                                    @Html.Label("Số điện thoại", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                    @Html.EditorFor(model => model.SODIENTHOAI, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SODIENTHOAI, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-md-6">
+                                    @Html.Label("Địa chỉ", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                    @Html.EditorFor(model => model.DIACHI, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DIACHI, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                @Html.Label("Giới thiệu", htmlAttributes: new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.GIOITHIEU, new { @class = "form-control", @rows = 3 })
+                                @Html.ValidationMessageFor(model => model.GIOITHIEU, "", new { @class = "text-danger" })
+                            </div>
+
+                            <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

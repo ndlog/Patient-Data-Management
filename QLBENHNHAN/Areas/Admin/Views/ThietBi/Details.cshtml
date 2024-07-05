@@ -1,0 +1,90 @@
+﻿@model QLBENHNHAN.Models.THIETBI
+
+@{
+    ViewBag.Title = "Chi tiết thông tin Thiết Bị";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row gutters">
+            <h1 class="h3 mb-2 ml-2 text-primary">Thông tin chi tiết Thiết Bị</h1>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h6 class="mb-2 text-primary">Thông tin thiết bị</h6>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group pe-none">
+                                    @Html.Label("Mã thiết bị", htmlAttributes: new { @class = "control-label" }):
+                                    @Html.EditorFor(model => model.MATB, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group pe-none">
+                                    @Html.Label("Tên thiết bị", htmlAttributes: new { @class = "control-label" }):
+                                    @Html.EditorFor(model => model.TENTHIETBI, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group pe-none">
+                                    @Html.Label("Loại thiết bị", htmlAttributes: new { @class = "control-label" }):
+                                    @Html.EditorFor(model => model.LOAITHIETBI.TENLOAITHIETBI, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group pe-none">
+                                    @Html.Label("Tình trạng", htmlAttributes: new { @class = "control-label" }):
+                                    @Html.EditorFor(model => model.TINHTRANG, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group pe-none">
+                                    @Html.Label("Xuất xứ", htmlAttributes: new { @class = "control-label" }):
+                                    @Html.EditorFor(model => model.XUATXU, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group pe-none">
+                                    @Html.Label("Mô tả", htmlAttributes: new { @class = "control-label" }):
+                                    @Html.TextAreaFor(model => model.MOTA, new { @class = "form-control", @readonly = true, @rows = 3 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h6 class="mt-3 mb-2 text-primary">Thông tin sử dụng</h6>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group pe-none">
+                                    @Html.Label("Phòng - Tầng", htmlAttributes: new { @class = "control-label" }):
+                                    @Html.DropDownListFor(model => model.idP, ViewBag.PhongList as SelectList, new { @class = "form-control", @readonly = true })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="text-right">
+                                    <a href="@Url.Action("Index")" class="btn btn-light">Trở lại</a>
+                                    <a href="@Url.Action("Edit", new { id = Model.MATB })" class="btn btn-primary">Chỉnh sửa</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

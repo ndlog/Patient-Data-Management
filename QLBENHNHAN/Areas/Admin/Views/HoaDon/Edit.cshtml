@@ -1,0 +1,266 @@
+﻿@model QLBENHNHAN.Models.HOADON
+
+@{
+    ViewBag.Title = "Chỉnh sửa hóa đơn";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var chiTietHoaDon = Json.Decode(Model.CHITIETHOADON);
+    var cultureInfo = new System.Globalization.CultureInfo("en-US");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <style>
+        .divider {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row gutters">
+            <h1 class="h3 mb-2 ml-2 text-primary">Chỉnh sửa hóa đơn</h1>
+            @using (Html.BeginForm("Edit", "HoaDon", null, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <h6 class="mb-2 text-primary">Thông tin cơ bản</h6>
+                                </div>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.MAHD)
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group pe-none">
+                                        @Html.Label("Mã hóa đơn", htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.MAHD, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        @Html.ValidationMessageFor(model => model.MAHD, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group pe-none">
+                                        @Html.LabelFor(model => model.idBN, "Tên bệnh nhân", htmlAttributes: new { @class = "control-label" })
+                                        @Html.DropDownList("idBN", null, new { @class = "form-control", @readonly = true })
+                                        @Html.ValidationMessageFor(model => model.idBN, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group pe-none">
+                                        @Html.Label("Tiêu đề", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.EditorFor(model => model.TENHOADON, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        @Html.ValidationMessageFor(model => model.TENHOADON, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group pe-none">
+                                        @Html.Label("Trạng thái", htmlAttributes: new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.EditorFor(model => model.TRANGTHAI, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        @Html.ValidationMessageFor(model => model.TRANGTHAI, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label class="text-primary" for="searchProduct">Tìm kiếm thuốc</label>
+                                        <input type="text" class="form-control" id="searchProduct" placeholder="Nhập tên thuốc">
+                                        <ul style="max-height: 300px; overflow-y: auto; cursor: pointer;" id="searchResult" class="list-group mt-1"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <p class="text-primary">Danh sách thuốc</p>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Tên thuốc</th>
+                                                <th>Số lượng</th>
+                                                <th>
+                                                    Giá
+                                                    (VNĐ)
+                                                </th>
+                                                <th>
+                                                    Tổng tiền
+                                                    (VNĐ)
+                                                </th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="selectedProductsBody">
+                                            @foreach (var chiTiet in chiTietHoaDon)
+                                            {
+                                                <tr>
+                                                    <td>@chiTiet.TenThuoc</td>
+                                                    <td><input type="number" min="1" class="form-control" value="@chiTiet.SoLuong"></td>
+                                                    <td>@String.Format(cultureInfo, "{0:N0}", @chiTiet.Gia)</td>
+                                                    <td>@String.Format(cultureInfo, "{0:N0}", @chiTiet.TongTien)</td>
+                                                    <td><button type="button" class="btn btn-danger delete-product-btn"><i class="fa-solid fa-trash"></i></button></td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row gutters">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="text-right">
+                                        <a class="btn btn-light" href="/Admin/HoaDon">Trở lại</a>
+                                        <button type="submit" class="btn btn-primary">Lưu</button>
+                                    </div>
+                                </div>
+                            </div>
+                            @Html.HiddenFor(model => model.CHITIETHOADON, new { id = "ChiTietHoaDon" })
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function getDataFromTable() {
+            var drugsList = [];
+            $('#selectedProductsBody tr').each(function () {
+                var drugName = $(this).find('td:nth-child(1)').text().trim();
+                var quantity = $(this).find('td:nth-child(2) input').val().trim();
+                var price = parseFloat($(this).find('td:nth-child(3)').text().replace(/,/g, '').replace('VNĐ', '').trim());
+                var total = parseFloat($(this).find('td:nth-child(4)').text().replace(/,/g, '').replace('VNĐ', '').trim());
+
+                var drug = {
+                    TenThuoc: drugName,
+                    SoLuong: parseInt(quantity),
+                    Gia: price,
+                    TongTien: total
+                };
+                drugsList.push(drug);
+            });
+
+            return JSON.stringify(drugsList);
+        }
+        //// bắt đầu cập nhập giá cũ
+        function updateTotalPriceOld(row) {
+            var quantity = parseFloat(row.find('input[type="number"]').val()); // Lấy số lượng mới từ đầu vào
+            var price = parseFloat(row.find('td:nth-child(3)').text().replace(/,/g, '').replace('VNĐ', '').trim()); // Lấy giá từ ô có liên quan, xóa dấu phẩy
+            var totalPrice = quantity * price; // Tính tổng giá mới
+            var formattedTotalPrice = totalPrice.toLocaleString('en-US'); // Định dạng tổng giá bằng dấu phẩy
+            row.find('td:nth-child(4)').text(formattedTotalPrice); // Cập nhật ô giá tổng với giá trị mới
+            updateTotalPriceForAllProducts();// Cập nhật tổng giá cho tất cả sản phẩm
+        }
+
+        // Lắng nghe sự kiện để thay đổi số lượng trong các hàng hiện có
+        $('#selectedProductsBody').on('change', 'input[type="number"]', function () {
+            updateTotalPriceOld($(this).closest('tr')); // Gọi updateTotalPriceOld khi số lượng thay đổi
+        });
+        //// kết thúc
+
+        function updateTotalPrice(row) {
+            var quantity = parseFloat(row.find('.product-quantity').val()); // Lấy số lượng mới từ input
+            var price = parseFloat(row.find('.product-price').text().replace(/,/g, '')); // Lấy giá từ cell thích hợp, loại bỏ dấu phẩy
+            var totalPrice = quantity * price; // Tính tổng tiền mới
+            var formattedTotalPrice = totalPrice.toLocaleString('en-US'); // Định dạng tổng tiền mới có dấu phẩy
+            row.find('.product-total-price').text(formattedTotalPrice); // Cập nhật cell tổng tiền với giá trị mới
+            updateTotalPriceForAllProducts(); // Cập nhật tổng tiền cho tất cả sản phẩm
+        }
+
+        function updateTotalPriceForAllProducts() {
+            var total = 0;
+            $('#selectedProductsBody tr').each(function () {
+                var totalPrice = parseFloat($(this).find('.product-total-price').text().replace(/,/g, '')); // Lấy tổng tiền từ cell, loại bỏ dấu phẩy
+                total += totalPrice; // Cộng tổng tiền của từng sản phẩm lại để tính tổng tiền của tất cả
+            });
+            var formattedTotal = total.toLocaleString('en-US'); // Định dạng tổng tiền có dấu phẩy
+            $('#totalPrice').text(formattedTotal); // Cập nhật tổng tiền tổng cộng lên giao diện
+        }
+
+        $(document).ready(function () {
+            $('form').submit(function () {
+                var drugsData = getDataFromTable();
+                $('#ChiTietHoaDon').val(drugsData);
+            });
+
+            $('#idBN').change(function () {
+                var selectedPatientId = $(this).val();
+                $.ajax({
+                    url: '/Admin/HoaDon/GetPrescriptions',
+                    type: 'GET',
+                    data: { id: selectedPatientId },
+                    success: function (data) {
+                        $('#prescriptionsContainer').html(data);
+                    },
+                    error: function () {
+                        alert('Đã có lỗi xảy ra');
+                    }
+                });
+            });
+
+            var typingTimer; // Biến để theo dõi thời gian nhập
+            var doneTypingInterval = 1000;
+
+            $('#searchProduct').keyup(function () {
+                clearTimeout(typingTimer);
+                if ($('#searchProduct').val()) {
+                    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+                }
+            });
+
+            function doneTyping() {
+                var searchKeyword = $('#searchProduct').val();
+                $.ajax({
+                    url: '/Admin/HoaDon/SearchProducts',
+                    type: 'GET',
+                    data: { keyword: searchKeyword },
+                    success: function (data) {
+                        $('#searchResult').html(data);
+                    },
+                    error: function () {
+                        alert('Đã có lỗi xảy ra');
+                    }
+                });
+            }
+
+            $(document).on('click', '.list-group-item', function () {
+                var productName = $(this).text();
+                var productPrice = $(this).data('product-price');
+
+                var newRow = '<tr><td>' + productName
+                    + '</td><td><input type="number" min="1" class="form-control product-quantity" value="1"></td><td class="product-price">'
+                    + productPrice.toLocaleString('en-US') + '</td><td class="product-total-price">'
+                    + productPrice.toLocaleString('en-US') + '</td><td><button class="btn btn-danger delete-product-btn"><i class="fa-solid fa-trash"></i></button></td></tr>';
+                $('#selectedProductsBody').append(newRow);
+                $('#searchProduct').val(''); // Reset input tìm kiếm dược phẩm
+                $('#searchResult').empty(); // Xóa danh sách tìm kiếm kết quả
+            });
+
+            $(document).ready(function () {
+                // Xử lý sự kiện khi thay đổi số lượng sản phẩm
+                $(document).on('change', '.product-quantity', function () {
+                    updateTotalPrice($(this).closest('tr')); // Gọi hàm cập nhật giá và tổng tiền khi số lượng thay đổi
+                });
+
+                // Xử lý sự kiện khi nhấp vào nút xóa sản phẩm trong bảng
+                $(document).on('click', '.delete-product-btn', function () {
+                    $(this).closest('tr').remove(); // Xóa sản phẩm khỏi bảng
+                    updateTotalPriceForAllProducts(); // Cập nhật lại tổng tiền sau khi xóa sản phẩm
+                });
+            });
+        });
+
+        // Khi người dùng nhấp vào nút xóa trong bảng dược phẩm đã chọn
+        $(document).on('click', '.delete-product-btn', function () {
+            $(this).closest('tr').remove(); // Xóa dòng chứa nút đã nhấp vào
+        });
+    </script>
+}

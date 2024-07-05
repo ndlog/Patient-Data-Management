@@ -1,0 +1,157 @@
+﻿@model QLBENHNHAN.Models.Validations.ReportViewModel
+
+@{
+    ViewBag.Title = "Báo cáo và thống kê bệnh án";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row gutters m-3">
+    <h1 class="h3 mb-2 ml-2 text-primary">Báo cáo và thống kê bệnh án</h1>
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="row gutters">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h6 class="mb-2 text-primary">Chọn thông tin cần báo cáo</h6>
+                    </div>
+                    @using (Html.BeginForm())
+                    {
+                        <div class="row gutters">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="control-label">Thời điểm bắt đầu báo cáo:</label><span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="control-label">Thời điểm cuối cùng báo cáo:</label>
+                                    @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="control-label">Loại báo cáo:</label>
+                                    @Html.DropDownListFor(m => m.ReportType, new SelectList(new List<SelectListItem>
+                                    {
+                                        new SelectListItem { Text = "Ngày", Value = "Ngày" },
+                                        new SelectListItem { Text = "Tuần", Value = "Tuần" },
+                                        new SelectListItem { Text = "Tháng", Value = "Tháng" },
+                                        new SelectListItem { Text = "Quý", Value = "Quý" },
+                                        new SelectListItem { Text = "Năm", Value = "Năm" }
+                                    }, "Value", "Text"), htmlAttributes: new { @class = "form-select" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gutters">
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-12">
+                                <div class="text-left">
+                                    <button class="btn btn-success" type="submit">Tạo báo cáo</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-12">
+                                <div class="text-right mr-4">
+                                    @if (Model.GroupedBENHANs != null && Model.GroupedBENHANs.Count > 0)
+                                    {
+                                        <a class="btn btn-primary" href="@Url.Action("ExportExcelBenhAn", "BaoCao", new { area = "Admin", startDate = Model.StartDate.ToString("yyyy-MM-dd"), endDate = Model.EndDate.ToString("yyyy-MM-dd"), reportType = Model.ReportType })">Xuất file Excel</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="row gutters mt-4">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="mb-2 text-primary">Bảng cáo cáo và thống kê</h6>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            @if (Model.GroupedBENHANs != null && Model.GroupedBENHANs.Count > 0)
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" width="100%" cellspacing="0" id="contentBody">
+                                        <thead>
+                                            <tr class="text-primary pe-none">
+                                                <th>STT</th>
+                                                <th>Mã bệnh án</th>
+                                                <th>Tiêu đề</th>
+                                                <th>Tên bệnh nhân</th>
+                                                <th>Tên bác sĩ</th>
+                                                <th>Trạng thái</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var group in Model.GroupedBENHANs)
+                                            {
+                                                <tr>
+                                                    <td colspan="7" class="font-weight-bold">
+                                                        @if (Model.ReportType == "Ngày")
+                                                        {
+                                                            <span>Ngày @group.Key</span>
+                                                        }
+                                                        else if (Model.ReportType == "Tuần")
+                                                        {
+                                                            <span>Tuần @group.Key</span>
+                                                        }
+                                                        else if (Model.ReportType == "Tháng")
+                                                        {
+                                                            <span>
+                                                                Tháng @group.Key
+                                                            </span>
+                                                        }
+                                                        else if (Model.ReportType == "Năm")
+                                                        {
+                                                            <span>
+                                                                Năm @group.Key
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>@group.Key</span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                foreach (var patient in group.Value)
+                                                {
+                                                    <tr>
+                                                        <td>@(group.Value.IndexOf(patient) + 1)</td>
+                                                        <td>@patient.MABA</td>
+                                                        <td>@patient.TENBENHAN</td>
+                                                        <td>@(patient.idBN) - @(patient.BENHNHAN.HOTEN)</td>
+                                                        <td>@(patient.idBS) - @(patient.BACSI.HOTEN)</td>
+                                                        <td>
+                                                            @if (patient.TRANGTHAI == "Đợi thăm khám")
+                                                            {
+                                                                <span style="font-size: 84%;" class="badge bg-warning text-white fw-bold">
+                                                                    Đợi thăm khám
+                                                                </span>
+                                                            }
+                                                            @if (patient.TRANGTHAI == "Đang thăm khám")
+                                                            {
+                                                                <span style="font-size: 84%;" class="badge bg-info text-white fw-bold">
+                                                                    Đang thăm khám
+                                                                </span>
+                                                            }
+                                                            @if (patient.TRANGTHAI == "Đã thăm khám")
+                                                            {
+                                                                <span style="font-size: 84%;" class="badge bg-success text-white fw-bold">
+                                                                    Đã thăm khám
+                                                                </span>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <p>Không tìm thấy dữ liệu cho tiêu chí đã chọn.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
