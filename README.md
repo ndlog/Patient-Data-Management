@@ -1,7 +1,7 @@
 # Hệ thống website quản lý dữ liệu bệnh nhân
 
 # Danh sách chức năng trang chủ bệnh nhân
-- Đăng ký, đăng nhập/Đăng xuất, quên mật khẩu
+- Đăng ký, đăng nhập/Đăng xuất, quên mật khẩu (có gửi xác thực về email)
 - Quản lý hồ sơ cá nhân (Hiển thị, cập nhật)
 - Quản lý danh sách lịch hẹn
 - Quản lý danh sách đơn thuốc
